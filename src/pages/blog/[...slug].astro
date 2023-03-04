@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import BlogSinglePage from "../../components/layouts/blog-single-page.astro";
+import BlogWrapper from "../../components/layouts/blog-wrapper.astro";
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection('blog', ({ data }) => {
+        return !data.draft;
+    })
+
+    return blogEntries.map(entry => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BlogWrapper title={entry.data.title}>
+    <BlogSinglePage frontmatter={entry.data}>
+        <p>{entry.data.excerpt}</p>
+        <Content />
+    </BlogSinglePage>
+</BlogWrapper>
