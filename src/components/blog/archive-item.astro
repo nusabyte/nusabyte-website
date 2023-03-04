@@ -1,0 +1,43 @@
+---
+interface Props {
+    frontmatter: {
+        title: string;
+        excerpt: string;
+        tags: string[];
+        date: string;
+    },
+    slug: string;
+}
+const { frontmatter: { title, excerpt, tags }, slug } = Astro.props;
+---
+
+<li class="py-12">
+    <article>
+        <div class="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+            <dl>
+                <dt class="sr-only">Published on</dt>
+                <dd class="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                    <time datetime="2021-08-07T15:32:14.000Z">August 7, 2021</time>
+                </dd>
+            </dl>
+            <div class="space-y-5 xl:col-span-3">
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold leading-8 tracking-tight">
+                            <a class="text-gray-900 dark:text-gray-100" href={`/blog/${slug}/`}>{title}</a>
+                        </h2>
+                        <div class="flex flex-wrap">
+                            {tags.map(tag => (
+                                <a class="mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" href={`/blog/tags/${tag.toLowerCase().replace(' ', '-')}/`}>{tag}</a>
+                            ))}
+                        </div>
+                    </div>
+                    <div class="prose max-w-none text-gray-500 dark:text-gray-400">{excerpt}</div>
+                </div>
+                <div class="text-base font-medium leading-6">
+                    <a class="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" aria-label={`Read &quot;${title}&quot;`} href={`/blog/${slug}/`}>Read more →</a>
+                </div>
+            </div>
+        </div>
+    </article>
+</li>
